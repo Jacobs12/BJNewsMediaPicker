@@ -1,0 +1,726 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A32D88A421A6A21800996A68 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88A321A6A21800996A68 /* AppDelegate.m */; };
+		A32D88A721A6A21800996A68 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88A621A6A21800996A68 /* ViewController.m */; };
+		A32D88AA21A6A21900996A68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32D88A821A6A21900996A68 /* Main.storyboard */; };
+		A32D88AC21A6A22200996A68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32D88AB21A6A22200996A68 /* Assets.xcassets */; };
+		A32D88AF21A6A22200996A68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32D88AD21A6A22200996A68 /* LaunchScreen.storyboard */; };
+		A32D88B221A6A22200996A68 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88B121A6A22200996A68 /* main.m */; };
+		A32D88BC21A6A22200996A68 /* BJNewsMediaPickerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88BB21A6A22200996A68 /* BJNewsMediaPickerTests.m */; };
+		A32D88C721A6A22200996A68 /* BJNewsMediaPickerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88C621A6A22200996A68 /* BJNewsMediaPickerUITests.m */; };
+		A32D88E121A6A2C100996A68 /* BJNewsMediaCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88E021A6A2C100996A68 /* BJNewsMediaCache.m */; };
+		A32D88E421A6A2CB00996A68 /* BJNewsMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88E321A6A2CB00996A68 /* BJNewsMediaItem.m */; };
+		A32D88E721A6A2D600996A68 /* BJNewsMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88E621A6A2D600996A68 /* BJNewsMediaManager.m */; };
+		A32D88EA21A6A30700996A68 /* BJNewsAssetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88E921A6A30700996A68 /* BJNewsAssetViewController.m */; };
+		A32D88ED21A6A31B00996A68 /* BJNewsCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88EC21A6A31B00996A68 /* BJNewsCameraViewController.m */; };
+		A32D88F621A6A38500996A68 /* BJNewsAssetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88F421A6A38500996A68 /* BJNewsAssetCollectionViewCell.m */; };
+		A32D88F721A6A38500996A68 /* BJNewsAssetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A32D88F521A6A38500996A68 /* BJNewsAssetCollectionViewCell.xib */; };
+		A32D890221A6A96B00996A68 /* NSString+BJNewsMediaMD5.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D890121A6A96B00996A68 /* NSString+BJNewsMediaMD5.m */; };
+		A32D890521A6A9E700996A68 /* BJNewsMediaLogItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D890421A6A9E700996A68 /* BJNewsMediaLogItem.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A32D88B821A6A22200996A68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A32D889721A6A21800996A68 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A32D889E21A6A21800996A68;
+			remoteInfo = BJNewsMediaPicker;
+		};
+		A32D88C321A6A22200996A68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A32D889721A6A21800996A68 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A32D889E21A6A21800996A68;
+			remoteInfo = BJNewsMediaPicker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A32D889F21A6A21800996A68 /* BJNewsMediaPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BJNewsMediaPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A32D88A221A6A21800996A68 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A32D88A321A6A21800996A68 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A32D88A521A6A21800996A68 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		A32D88A621A6A21800996A68 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A32D88A921A6A21900996A68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A32D88AB21A6A22200996A68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A32D88AE21A6A22200996A68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A32D88B021A6A22200996A68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A32D88B121A6A22200996A68 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A32D88B721A6A22200996A68 /* BJNewsMediaPickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BJNewsMediaPickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A32D88BB21A6A22200996A68 /* BJNewsMediaPickerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsMediaPickerTests.m; sourceTree = "<group>"; };
+		A32D88BD21A6A22200996A68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A32D88C221A6A22200996A68 /* BJNewsMediaPickerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BJNewsMediaPickerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A32D88C621A6A22200996A68 /* BJNewsMediaPickerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsMediaPickerUITests.m; sourceTree = "<group>"; };
+		A32D88C821A6A22200996A68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A32D88DF21A6A2C000996A68 /* BJNewsMediaCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJNewsMediaCache.h; sourceTree = "<group>"; };
+		A32D88E021A6A2C100996A68 /* BJNewsMediaCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsMediaCache.m; sourceTree = "<group>"; };
+		A32D88E221A6A2CB00996A68 /* BJNewsMediaItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJNewsMediaItem.h; sourceTree = "<group>"; };
+		A32D88E321A6A2CB00996A68 /* BJNewsMediaItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsMediaItem.m; sourceTree = "<group>"; };
+		A32D88E521A6A2D600996A68 /* BJNewsMediaManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJNewsMediaManager.h; sourceTree = "<group>"; };
+		A32D88E621A6A2D600996A68 /* BJNewsMediaManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsMediaManager.m; sourceTree = "<group>"; };
+		A32D88E821A6A30700996A68 /* BJNewsAssetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJNewsAssetViewController.h; sourceTree = "<group>"; };
+		A32D88E921A6A30700996A68 /* BJNewsAssetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsAssetViewController.m; sourceTree = "<group>"; };
+		A32D88EB21A6A31B00996A68 /* BJNewsCameraViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJNewsCameraViewController.h; sourceTree = "<group>"; };
+		A32D88EC21A6A31B00996A68 /* BJNewsCameraViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsCameraViewController.m; sourceTree = "<group>"; };
+		A32D88EE21A6A33D00996A68 /* BJNewsConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJNewsConfig.h; sourceTree = "<group>"; };
+		A32D88F321A6A38500996A68 /* BJNewsAssetCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJNewsAssetCollectionViewCell.h; sourceTree = "<group>"; };
+		A32D88F421A6A38500996A68 /* BJNewsAssetCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsAssetCollectionViewCell.m; sourceTree = "<group>"; };
+		A32D88F521A6A38500996A68 /* BJNewsAssetCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BJNewsAssetCollectionViewCell.xib; sourceTree = "<group>"; };
+		A32D890021A6A96B00996A68 /* NSString+BJNewsMediaMD5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+BJNewsMediaMD5.h"; sourceTree = "<group>"; };
+		A32D890121A6A96B00996A68 /* NSString+BJNewsMediaMD5.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+BJNewsMediaMD5.m"; sourceTree = "<group>"; };
+		A32D890321A6A9E700996A68 /* BJNewsMediaLogItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJNewsMediaLogItem.h; sourceTree = "<group>"; };
+		A32D890421A6A9E700996A68 /* BJNewsMediaLogItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsMediaLogItem.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A32D889C21A6A21800996A68 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A32D88B421A6A22200996A68 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A32D88BF21A6A22200996A68 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A32D889621A6A21800996A68 = {
+			isa = PBXGroup;
+			children = (
+				A32D88A121A6A21800996A68 /* BJNewsMediaPicker */,
+				A32D88BA21A6A22200996A68 /* BJNewsMediaPickerTests */,
+				A32D88C521A6A22200996A68 /* BJNewsMediaPickerUITests */,
+				A32D88A021A6A21800996A68 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A32D88A021A6A21800996A68 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A32D889F21A6A21800996A68 /* BJNewsMediaPicker.app */,
+				A32D88B721A6A22200996A68 /* BJNewsMediaPickerTests.xctest */,
+				A32D88C221A6A22200996A68 /* BJNewsMediaPickerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A32D88A121A6A21800996A68 /* BJNewsMediaPicker */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88D421A6A24600996A68 /* viewController */,
+				A32D88A221A6A21800996A68 /* AppDelegate.h */,
+				A32D88A321A6A21800996A68 /* AppDelegate.m */,
+				A32D88A521A6A21800996A68 /* ViewController.h */,
+				A32D88A621A6A21800996A68 /* ViewController.m */,
+				A32D88A821A6A21900996A68 /* Main.storyboard */,
+				A32D88AB21A6A22200996A68 /* Assets.xcassets */,
+				A32D88AD21A6A22200996A68 /* LaunchScreen.storyboard */,
+				A32D88B021A6A22200996A68 /* Info.plist */,
+				A32D88B121A6A22200996A68 /* main.m */,
+			);
+			path = BJNewsMediaPicker;
+			sourceTree = "<group>";
+		};
+		A32D88BA21A6A22200996A68 /* BJNewsMediaPickerTests */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88BB21A6A22200996A68 /* BJNewsMediaPickerTests.m */,
+				A32D88BD21A6A22200996A68 /* Info.plist */,
+			);
+			path = BJNewsMediaPickerTests;
+			sourceTree = "<group>";
+		};
+		A32D88C521A6A22200996A68 /* BJNewsMediaPickerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88C621A6A22200996A68 /* BJNewsMediaPickerUITests.m */,
+				A32D88C821A6A22200996A68 /* Info.plist */,
+			);
+			path = BJNewsMediaPickerUITests;
+			sourceTree = "<group>";
+		};
+		A32D88D421A6A24600996A68 /* viewController */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88D521A6A25800996A68 /* 拍摄 */,
+				A32D88D621A6A26A00996A68 /* 相册选取 */,
+				A32D88D721A6A27500996A68 /* BJNewsMediaManager */,
+			);
+			path = viewController;
+			sourceTree = "<group>";
+		};
+		A32D88D521A6A25800996A68 /* 拍摄 */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88EB21A6A31B00996A68 /* BJNewsCameraViewController.h */,
+				A32D88EC21A6A31B00996A68 /* BJNewsCameraViewController.m */,
+			);
+			path = "拍摄";
+			sourceTree = "<group>";
+		};
+		A32D88D621A6A26A00996A68 /* 相册选取 */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88E821A6A30700996A68 /* BJNewsAssetViewController.h */,
+				A32D88E921A6A30700996A68 /* BJNewsAssetViewController.m */,
+				A32D88EF21A6A35300996A68 /* cell */,
+			);
+			path = "相册选取";
+			sourceTree = "<group>";
+		};
+		A32D88D721A6A27500996A68 /* BJNewsMediaManager */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88DB21A6A29F00996A68 /* manager */,
+				A32D88D821A6A28800996A68 /* config */,
+				A32D88D921A6A28D00996A68 /* cache */,
+			);
+			path = BJNewsMediaManager;
+			sourceTree = "<group>";
+		};
+		A32D88D821A6A28800996A68 /* config */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88EE21A6A33D00996A68 /* BJNewsConfig.h */,
+			);
+			path = config;
+			sourceTree = "<group>";
+		};
+		A32D88D921A6A28D00996A68 /* cache */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88DF21A6A2C000996A68 /* BJNewsMediaCache.h */,
+				A32D88E021A6A2C100996A68 /* BJNewsMediaCache.m */,
+				A32D88FF21A6A90000996A68 /* Tools */,
+			);
+			path = cache;
+			sourceTree = "<group>";
+		};
+		A32D88DA21A6A29800996A68 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88E221A6A2CB00996A68 /* BJNewsMediaItem.h */,
+				A32D88E321A6A2CB00996A68 /* BJNewsMediaItem.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		A32D88DB21A6A29F00996A68 /* manager */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88E521A6A2D600996A68 /* BJNewsMediaManager.h */,
+				A32D88E621A6A2D600996A68 /* BJNewsMediaManager.m */,
+				A32D88DA21A6A29800996A68 /* model */,
+				A32D88FB21A6A89900996A68 /* log */,
+			);
+			path = manager;
+			sourceTree = "<group>";
+		};
+		A32D88EF21A6A35300996A68 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				A32D88F321A6A38500996A68 /* BJNewsAssetCollectionViewCell.h */,
+				A32D88F421A6A38500996A68 /* BJNewsAssetCollectionViewCell.m */,
+				A32D88F521A6A38500996A68 /* BJNewsAssetCollectionViewCell.xib */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
+		A32D88FB21A6A89900996A68 /* log */ = {
+			isa = PBXGroup;
+			children = (
+				A32D890321A6A9E700996A68 /* BJNewsMediaLogItem.h */,
+				A32D890421A6A9E700996A68 /* BJNewsMediaLogItem.m */,
+			);
+			path = log;
+			sourceTree = "<group>";
+		};
+		A32D88FF21A6A90000996A68 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				A32D890021A6A96B00996A68 /* NSString+BJNewsMediaMD5.h */,
+				A32D890121A6A96B00996A68 /* NSString+BJNewsMediaMD5.m */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A32D889E21A6A21800996A68 /* BJNewsMediaPicker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A32D88CB21A6A22200996A68 /* Build configuration list for PBXNativeTarget "BJNewsMediaPicker" */;
+			buildPhases = (
+				A32D889B21A6A21800996A68 /* Sources */,
+				A32D889C21A6A21800996A68 /* Frameworks */,
+				A32D889D21A6A21800996A68 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BJNewsMediaPicker;
+			productName = BJNewsMediaPicker;
+			productReference = A32D889F21A6A21800996A68 /* BJNewsMediaPicker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A32D88B621A6A22200996A68 /* BJNewsMediaPickerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A32D88CE21A6A22200996A68 /* Build configuration list for PBXNativeTarget "BJNewsMediaPickerTests" */;
+			buildPhases = (
+				A32D88B321A6A22200996A68 /* Sources */,
+				A32D88B421A6A22200996A68 /* Frameworks */,
+				A32D88B521A6A22200996A68 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A32D88B921A6A22200996A68 /* PBXTargetDependency */,
+			);
+			name = BJNewsMediaPickerTests;
+			productName = BJNewsMediaPickerTests;
+			productReference = A32D88B721A6A22200996A68 /* BJNewsMediaPickerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A32D88C121A6A22200996A68 /* BJNewsMediaPickerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A32D88D121A6A22200996A68 /* Build configuration list for PBXNativeTarget "BJNewsMediaPickerUITests" */;
+			buildPhases = (
+				A32D88BE21A6A22200996A68 /* Sources */,
+				A32D88BF21A6A22200996A68 /* Frameworks */,
+				A32D88C021A6A22200996A68 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A32D88C421A6A22200996A68 /* PBXTargetDependency */,
+			);
+			name = BJNewsMediaPickerUITests;
+			productName = BJNewsMediaPickerUITests;
+			productReference = A32D88C221A6A22200996A68 /* BJNewsMediaPickerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A32D889721A6A21800996A68 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0930;
+				ORGANIZATIONNAME = "新京报社";
+				TargetAttributes = {
+					A32D889E21A6A21800996A68 = {
+						CreatedOnToolsVersion = 9.3;
+					};
+					A32D88B621A6A22200996A68 = {
+						CreatedOnToolsVersion = 9.3;
+						TestTargetID = A32D889E21A6A21800996A68;
+					};
+					A32D88C121A6A22200996A68 = {
+						CreatedOnToolsVersion = 9.3;
+						TestTargetID = A32D889E21A6A21800996A68;
+					};
+				};
+			};
+			buildConfigurationList = A32D889A21A6A21800996A68 /* Build configuration list for PBXProject "BJNewsMediaPicker" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A32D889621A6A21800996A68;
+			productRefGroup = A32D88A021A6A21800996A68 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A32D889E21A6A21800996A68 /* BJNewsMediaPicker */,
+				A32D88B621A6A22200996A68 /* BJNewsMediaPickerTests */,
+				A32D88C121A6A22200996A68 /* BJNewsMediaPickerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A32D889D21A6A21800996A68 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A32D88AF21A6A22200996A68 /* LaunchScreen.storyboard in Resources */,
+				A32D88AC21A6A22200996A68 /* Assets.xcassets in Resources */,
+				A32D88F721A6A38500996A68 /* BJNewsAssetCollectionViewCell.xib in Resources */,
+				A32D88AA21A6A21900996A68 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A32D88B521A6A22200996A68 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A32D88C021A6A22200996A68 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A32D889B21A6A21800996A68 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A32D890221A6A96B00996A68 /* NSString+BJNewsMediaMD5.m in Sources */,
+				A32D88A721A6A21800996A68 /* ViewController.m in Sources */,
+				A32D88F621A6A38500996A68 /* BJNewsAssetCollectionViewCell.m in Sources */,
+				A32D88E421A6A2CB00996A68 /* BJNewsMediaItem.m in Sources */,
+				A32D88E121A6A2C100996A68 /* BJNewsMediaCache.m in Sources */,
+				A32D88B221A6A22200996A68 /* main.m in Sources */,
+				A32D88A421A6A21800996A68 /* AppDelegate.m in Sources */,
+				A32D890521A6A9E700996A68 /* BJNewsMediaLogItem.m in Sources */,
+				A32D88EA21A6A30700996A68 /* BJNewsAssetViewController.m in Sources */,
+				A32D88ED21A6A31B00996A68 /* BJNewsCameraViewController.m in Sources */,
+				A32D88E721A6A2D600996A68 /* BJNewsMediaManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A32D88B321A6A22200996A68 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A32D88BC21A6A22200996A68 /* BJNewsMediaPickerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A32D88BE21A6A22200996A68 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A32D88C721A6A22200996A68 /* BJNewsMediaPickerUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A32D88B921A6A22200996A68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A32D889E21A6A21800996A68 /* BJNewsMediaPicker */;
+			targetProxy = A32D88B821A6A22200996A68 /* PBXContainerItemProxy */;
+		};
+		A32D88C421A6A22200996A68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A32D889E21A6A21800996A68 /* BJNewsMediaPicker */;
+			targetProxy = A32D88C321A6A22200996A68 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A32D88A821A6A21900996A68 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A32D88A921A6A21900996A68 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A32D88AD21A6A22200996A68 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A32D88AE21A6A22200996A68 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A32D88C921A6A22200996A68 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A32D88CA21A6A22200996A68 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A32D88CC21A6A22200996A68 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 42LRDW5LP3;
+				INFOPLIST_FILE = BJNewsMediaPicker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.bjnews.BJNewsMediaPicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A32D88CD21A6A22200996A68 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 42LRDW5LP3;
+				INFOPLIST_FILE = BJNewsMediaPicker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.bjnews.BJNewsMediaPicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A32D88CF21A6A22200996A68 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 42LRDW5LP3;
+				INFOPLIST_FILE = BJNewsMediaPickerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.bjnews.BJNewsMediaPickerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BJNewsMediaPicker.app/BJNewsMediaPicker";
+			};
+			name = Debug;
+		};
+		A32D88D021A6A22200996A68 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 42LRDW5LP3;
+				INFOPLIST_FILE = BJNewsMediaPickerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.bjnews.BJNewsMediaPickerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BJNewsMediaPicker.app/BJNewsMediaPicker";
+			};
+			name = Release;
+		};
+		A32D88D221A6A22200996A68 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 42LRDW5LP3;
+				INFOPLIST_FILE = BJNewsMediaPickerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.bjnews.BJNewsMediaPickerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = BJNewsMediaPicker;
+			};
+			name = Debug;
+		};
+		A32D88D321A6A22200996A68 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 42LRDW5LP3;
+				INFOPLIST_FILE = BJNewsMediaPickerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.bjnews.BJNewsMediaPickerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = BJNewsMediaPicker;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A32D889A21A6A21800996A68 /* Build configuration list for PBXProject "BJNewsMediaPicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A32D88C921A6A22200996A68 /* Debug */,
+				A32D88CA21A6A22200996A68 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A32D88CB21A6A22200996A68 /* Build configuration list for PBXNativeTarget "BJNewsMediaPicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A32D88CC21A6A22200996A68 /* Debug */,
+				A32D88CD21A6A22200996A68 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A32D88CE21A6A22200996A68 /* Build configuration list for PBXNativeTarget "BJNewsMediaPickerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A32D88CF21A6A22200996A68 /* Debug */,
+				A32D88D021A6A22200996A68 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A32D88D121A6A22200996A68 /* Build configuration list for PBXNativeTarget "BJNewsMediaPickerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A32D88D221A6A22200996A68 /* Debug */,
+				A32D88D321A6A22200996A68 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A32D889721A6A21800996A68 /* Project object */;
+}
