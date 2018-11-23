@@ -10,8 +10,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface BJNewsCameraViewController ()<AVCaptureFileOutputRecordingDelegate>{
+@interface BJNewsCameraViewController ()<AVCaptureFileOutputRecordingDelegate,AVCapturePhotoCaptureDelegate>{
     BJNewsAssetMediaType _mediaType;
+    NSString * _folderName;
 }
 
 /*
@@ -32,9 +33,15 @@
 @property (nonatomic, strong) AVCaptureDeviceInput *iInput;
 
 /**
+ 输出照片的配置
+ */
+@property (nonatomic,strong) AVCapturePhotoSettings * photoSettings;
+
+/**
  输出照片
  */
-@property (nonatomic, strong) AVCaptureStillImageOutput *iOutput;
+//@property (nonatomic, strong) AVCaptureStillImageOutput *iOutput;
+@property (nonatomic, strong) AVCapturePhotoOutput *iOutput;
 
 /**
  视频输出
@@ -50,6 +57,10 @@
 
 @property (nonatomic,strong) UIButton * photoButton;
 
+@property (nonatomic,strong) UIButton * cameraButton;
+
+@property (nonatomic,strong) UIButton * flashButton;
+
 @end
 
 @implementation BJNewsCameraViewController
@@ -57,6 +68,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _folderName = @"新京报";
     [self initCamera];
     [self createView];
 }
@@ -83,6 +95,8 @@
 - (void)createView{
     [self.view addSubview:self.photoButton];
     [self.view addSubview:self.videoButton];
+    [self.view addSubview:self.cameraButton];
+    [self.view addSubview:self.flashButton];
 }
 
 - (UIButton *)photoButton{
@@ -105,6 +119,26 @@
     return _videoButton;
 }
 
+- (UIButton *)cameraButton{
+    if(_cameraButton == nil){
+        _cameraButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        _cameraButton.frame = CGRectMake(100, 300, 100, 60);
+        [_cameraButton setTitle:@"切换" forState:UIControlStateNormal];
+        [_cameraButton addTarget:self action:@selector(changePositionAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _cameraButton;
+}
+
+- (UIButton *)flashButton{
+    if(_flashButton == nil){
+        _flashButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        _flashButton.frame = CGRectMake(100, 400, 100, 60);
+        [_flashButton setTitle:@"闪光灯" forState:UIControlStateNormal];
+        [_flashButton addTarget:self action:@selector(flashAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _flashButton;
+}
+
 - (AVCaptureSession *)iSession{
     if(_iSession == nil){
         _iSession = [[AVCaptureSession alloc]init];
@@ -115,18 +149,20 @@
 - (void)initCamera{
     self.iSession.sessionPreset = AVCaptureSessionPresetHigh;
     
-    //    前后摄像头
-    NSArray * deviceArray = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    for (AVCaptureDevice * device in deviceArray) {
-        if(device.position == AVCaptureDevicePositionBack){
-            self.iDevice = device;
-        }
-    }
+    self.iDevice = [self cameraWithPostion:AVCaptureDevicePositionBack];
+
     //添加摄像头设备
     //对设备进行设置时需上锁，设置完再打开锁
+    NSDictionary * setDict = @{AVVideoCodecKey:AVVideoCodecJPEG};
+    self.photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:setDict];
+    self.iOutput = [[AVCapturePhotoOutput alloc]init];
+
     [self.iDevice lockForConfiguration:nil];
-    if ([self.iDevice isFlashModeSupported:AVCaptureFlashModeAuto]) {
-        [self.iDevice setFlashMode:AVCaptureFlashModeAuto];
+//    if ([self.iDevice isFlashModeSupported:AVCaptureFlashModeAuto]) {
+//        [self.iDevice setFlashMode:AVCaptureFlashModeAuto];
+//    }
+    if([self.iOutput.supportedFlashModes containsObject:@(AVCaptureFlashModeAuto)]){
+        self.photoSettings.flashMode = AVCaptureFlashModeAuto;
     }
     if ([self.iDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
         [self.iDevice setFocusMode:AVCaptureFocusModeAutoFocus];
@@ -136,16 +172,19 @@
     }
     [self.iDevice unlockForConfiguration];
     //添加音频设备
-    AVCaptureDevice *audioDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
+//    AVCaptureDevice *audioDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
+    AVCaptureDevice * audioDevice = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInMicrophone] mediaType:AVMediaTypeAudio position:AVCaptureDevicePositionUnspecified].devices.firstObject;
     
     AVCaptureDeviceInput *audioInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:nil];
     
     self.iInput = [[AVCaptureDeviceInput alloc]initWithDevice:self.iDevice error:nil];
-    
-    self.iOutput = [[AVCaptureStillImageOutput alloc]init];
-    NSDictionary *setDic = [NSDictionary dictionaryWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey, nil];
-    self.iOutput.outputSettings = setDic;
-    
+//    < iOS10
+//    self.iOutput = [[AVCaptureStillImageOutput alloc]init];
+    //    NSDictionary *setDic = [NSDictionary dictionaryWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey, nil];
+    //    self.iOutput.outputSettings = setDic;
+//    NSDictionary * setDict = @{AVVideoCodecKey:AVVideoCodecJPEG};
+//    [self.iOutput setPhotoSettingsForSceneMonitoring:[AVCapturePhotoSettings photoSettingsWithFormat:setDict]];
+
     self.iMovieOutput = [[AVCaptureMovieFileOutput alloc]init];
     
     if ([self.iSession canAddInput:self.iInput]) {
@@ -164,6 +203,39 @@
     [self.view.layer insertSublayer:self.iPreviewLayer atIndex:0];
     
     [self.iSession startRunning];
+}
+
+/**
+ 获取前后摄像头
+
+ @param position position description
+ @return return value description
+ */
+- (AVCaptureDevice *)cameraWithPostion:(AVCaptureDevicePosition)position{
+    if (@available(iOS 10.0, *)) {
+        AVCaptureDeviceDiscoverySession *devicesIOS10 = [AVCaptureDeviceDiscoverySession  discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:position];
+        NSArray *devicesIOS  = devicesIOS10.devices;
+        for (AVCaptureDevice *device in devicesIOS) {
+            if ([device position] == position) {
+                return device;
+            }
+        }
+        return nil;
+    } else {
+        // Fallback on earlier versions
+        //    前后摄像头
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        NSArray * deviceArray = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+        for (AVCaptureDevice * device in deviceArray) {
+            if(device.position == AVCaptureDevicePositionBack){
+                return device;
+            }
+        }
+#pragma clang diagnostic pop
+  
+        return nil;
+    }
 }
 
 /**
@@ -247,14 +319,20 @@
     UIButton *flashButton = (UIButton *)sender;
     flashButton.selected = !flashButton.selected;
     if (flashButton.selected) {
-        if ([self.iDevice isFlashModeSupported:AVCaptureFlashModeOn]) {
-            [self.iDevice setFlashMode:AVCaptureFlashModeOn];
-            //            [[CustomeAlertView shareView] showCustomeAlertViewWithMessage:@"闪光灯已开启"];
+//        if ([self.iDevice isFlashModeSupported:AVCaptureFlashModeOn]) {
+//            [self.iDevice setFlashMode:AVCaptureFlashModeOn];
+//            //            [[CustomeAlertView shareView] showCustomeAlertViewWithMessage:@"闪光灯已开启"];
+//        }
+        if([self.iOutput.supportedFlashModes containsObject:@(AVCaptureFlashModeOn)]){
+            self.photoSettings.flashMode = AVCaptureFlashModeOn;
         }
     } else{
-        if ([self.iDevice isFlashModeSupported:AVCaptureFlashModeOff]) {
-            [self.iDevice setFlashMode:AVCaptureFlashModeOff];
-            //            [[CustomeAlertView shareView] showCustomeAlertViewWithMessage:@"闪光灯已关闭"];
+//        if ([self.iDevice isFlashModeSupported:AVCaptureFlashModeOff]) {
+//            [self.iDevice setFlashMode:AVCaptureFlashModeOff];
+//            //            [[CustomeAlertView shareView] showCustomeAlertViewWithMessage:@"闪光灯已关闭"];
+//        }
+        if([self.iOutput.supportedFlashModes containsObject:@(AVCaptureFlashModeOff)]){
+            self.photoSettings.flashMode = AVCaptureFlashModeOff;
         }
     }
     
@@ -268,23 +346,25 @@
  */
 - (IBAction)changePositionAction:(id)sender {
     
-    NSArray *deviceArray = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+//    NSArray *deviceArray = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
     AVCaptureDevice *newDevice;
     AVCaptureDeviceInput *newInput;
     
     
     if (self.iDevice.position == AVCaptureDevicePositionBack) {
-        for (AVCaptureDevice *device in deviceArray) {
-            if (device.position == AVCaptureDevicePositionFront) {
-                newDevice = device;
-            }
-        }
+//        for (AVCaptureDevice *device in deviceArray) {
+//            if (device.position == AVCaptureDevicePositionFront) {
+//                newDevice = device;
+//            }
+//        }
+        newDevice = [self cameraWithPostion:AVCaptureDevicePositionFront];
     } else {
-        for (AVCaptureDevice *device in deviceArray) {
-            if (device.position == AVCaptureDevicePositionBack) {
-                newDevice = device;
-            }
-        }
+//        for (AVCaptureDevice *device in deviceArray) {
+//            if (device.position == AVCaptureDevicePositionBack) {
+//                newDevice = device;
+//            }
+//        }
+        newDevice = [self cameraWithPostion:AVCaptureDevicePositionBack];
     }
     
     newInput = [AVCaptureDeviceInput deviceInputWithDevice:newDevice error:nil];
@@ -312,17 +392,21 @@
     if (!connection) {
         NSLog(@"没有摄像头权限");
     } else{
-        [self.iOutput captureStillImageAsynchronouslyFromConnection:connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-            if (!imageDataSampleBuffer) {
-                NSLog(@"error");
-            } else{
-                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                UIImage *image = [UIImage imageWithData:imageData];
-                
-                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-                
-            }
-        }];
+//        [self.iOutput captureStillImageAsynchronouslyFromConnection:connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+//            if (!imageDataSampleBuffer) {
+//                NSLog(@"error");
+//            } else{
+//                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+//                UIImage *image = [UIImage imageWithData:imageData];
+//
+//                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+//
+//            }
+//        }];
+  
+//        [self.iOutput setPhotoSettingsForSceneMonitoring:];
+        [self.iOutput capturePhotoWithSettings:self.photoSettings delegate:self];
+        
     }
 }
 
@@ -332,9 +416,7 @@
         if(!connect){
             NSLog(@"没有摄像头权限");
         }else{
-            NSDateFormatter * df = [[NSDateFormatter alloc]init];
-            df.dateFormat = @"yyyyMMddhhmmss";
-            NSString * fileName = [df stringFromDate:[NSDate date]];
+     
             //            NSURL *url = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"cameraVideo.mov"]];
             NSURL * url = [NSURL fileURLWithPath:[[BJNewsMediaCache defaultManager] cameraPath]];
             NSLog(@"%@",url.path);
@@ -350,6 +432,15 @@
 }
 
 #pragma mark - delegate
+
+- (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhotoSampleBuffer:(CMSampleBufferRef)photoSampleBuffer previewPhotoSampleBuffer:(CMSampleBufferRef)previewPhotoSampleBuffer resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings bracketSettings:(AVCaptureBracketedStillImageSettings *)bracketSettings error:(NSError *)error{
+    NSLog(@"拍照结束");
+    NSData *data = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:photoSampleBuffer previewPhotoSampleBuffer:previewPhotoSampleBuffer];
+    UIImage *image = [UIImage imageWithData:data];
+//    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    UIImageWriteToSavedPhotosAlbum(image, self, nil, nil);
+
+}
 
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
     NSLog(@"%@",outputFileURL.path);
@@ -368,11 +459,16 @@
                 self.callBack(model);
             }
             
+//            "Use creationRequestForAssetFromVideoAtFilePath: on PHAssetChangeRequest from the Photos framework to create a new asset instead")
+//            PHPhotoLibrary * photoLibrary = [[PHPhotoLibrary alloc]init];
+//            [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:[NSURL fileURLWithPath:filePath]];
+//            [PHPhotoLibrary]
             //保存视频到相册
-            ALAssetsLibrary *assetsLibrary=[[ALAssetsLibrary alloc]init];
-            [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:[NSURL fileURLWithPath:filePath] completionBlock:^(NSURL *assetURL, NSError *error) {
-                NSLog(@"视频保存成功");
-            }];
+//            ALAssetsLibrary *assetsLibrary=[[ALAssetsLibrary alloc]init];
+//            [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:[NSURL fileURLWithPath:filePath] completionBlock:^(NSURL *assetURL, NSError *error) {
+//                NSLog(@"视频保存成功");
+//            }];
+            [self writeVideoAtPath:filePath];
         }
     }];
     //    //保存视频到相册
@@ -380,4 +476,126 @@
     //    [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:nil];
     //    NSLog(@"视频保存成功");
 }
+
+- (void)writeVideoAtPath:(NSString *)path{
+    if([self isExistFolder:_folderName] == NO){
+        [self createFolder:_folderName completionHandler:^(BOOL success, NSError * _Nullable error) {
+            if(success){
+                [self saveVideoPath:path];
+            }else{
+                NSLog(@"相册创建失败");
+            }
+        }];
+    }else{
+        [self saveVideoPath:path];
+    }
+}
+
+- (BOOL)isExistFolder:(NSString *)folderName {
+    //首先获取用户手动创建相册的集合
+    PHFetchResult *collectonResuts = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+    
+    __block BOOL isExisted = NO;
+    //对获取到集合进行遍历
+    [collectonResuts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        PHAssetCollection *assetCollection = obj;
+        //folderName是我们写入照片的相册
+        if ([assetCollection.localizedTitle isEqualToString:folderName])  {
+            isExisted = YES;
+        }
+    }];
+    
+    return isExisted;
+}
+
+- (void)createFolder:(NSString *)folderName completionHandler:(void (^) (BOOL success, NSError * _Nullable error))handler{
+    if (![self isExistFolder:folderName]) {
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+            //添加HUD文件夹
+            [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:folderName];
+            
+        } completionHandler:^(BOOL success, NSError * _Nullable error) {
+            if(handler){
+                handler(success,error);
+            }
+            if (success) {
+                NSLog(@"创建相册文件夹成功!");
+            } else {
+                NSLog(@"创建相册文件夹失败:%@", error);
+            }
+        }];
+    }
+}
+
+- (void)saveImagePath:(NSString *)imagePath{
+    NSURL *url = [NSURL fileURLWithPath:imagePath];
+    
+    //标识保存到系统相册中的标识
+    __block NSString *localIdentifier;
+    
+    //首先获取相册的集合
+    PHFetchResult *collectonResuts = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+    //对获取到集合进行遍历
+    [collectonResuts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        PHAssetCollection *assetCollection = obj;
+        //Camera Roll是我们写入照片的相册
+        if ([assetCollection.localizedTitle isEqualToString:self->_folderName])  {
+            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                //请求创建一个Asset
+                PHAssetChangeRequest *assetRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:url];
+                //请求编辑相册
+                PHAssetCollectionChangeRequest *collectonRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:assetCollection];
+                //为Asset创建一个占位符，放到相册编辑请求中
+                PHObjectPlaceholder *placeHolder = [assetRequest placeholderForCreatedAsset];
+                //相册中添加照片
+                [collectonRequest addAssets:@[placeHolder]];
+                
+                localIdentifier = placeHolder.localIdentifier;
+            } completionHandler:^(BOOL success, NSError *error) {
+                if (success) {
+                    NSLog(@"保存图片成功!");
+                } else {
+                    NSLog(@"保存图片失败:%@", error);
+                }
+            }];
+        }
+    }];
+}
+
+- (void)saveVideoPath:(NSString *)videoPath {
+    NSURL *url = [NSURL fileURLWithPath:videoPath];
+    
+    //标识保存到系统相册中的标识
+    __block NSString *localIdentifier;
+    
+    //首先获取相册的集合
+    PHFetchResult *collectonResuts = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+    //对获取到集合进行遍历
+    [collectonResuts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        PHAssetCollection *assetCollection = obj;
+        //folderName是我们写入照片的相册
+        NSLog(@"相册名称:%@",assetCollection.localizedTitle);
+        if ([assetCollection.localizedTitle isEqualToString:self->_folderName])  {
+            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                //请求创建一个Asset
+                PHAssetChangeRequest *assetRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+                //请求编辑相册
+                PHAssetCollectionChangeRequest *collectonRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:assetCollection];
+                //为Asset创建一个占位符，放到相册编辑请求中
+                PHObjectPlaceholder *placeHolder = [assetRequest placeholderForCreatedAsset];
+                //相册中添加视频
+                [collectonRequest addAssets:@[placeHolder]];
+
+                localIdentifier = placeHolder.localIdentifier;
+            } completionHandler:^(BOOL success, NSError *error) {
+                if (success) {
+                    NSLog(@"保存视频成功!");
+                } else {
+                    NSLog(@"保存视频失败:%@", error);
+                }
+            }];
+        }
+    }];
+}
+
 @end

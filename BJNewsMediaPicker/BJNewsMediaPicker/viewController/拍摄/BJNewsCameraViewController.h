@@ -11,6 +11,9 @@
 
 @interface BJNewsCameraViewController : ViewController
 
+/**
+ 回调
+ */
 @property (nonatomic,copy) void (^callBack) (BJNewsMediaItem * model);
 
 @end

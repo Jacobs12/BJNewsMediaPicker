@@ -38,6 +38,8 @@
                 
             } completionHandler:^(NSString *filePath, UIImage *previewImage, NSInteger fileSize) {
                 NSLog(@"导出完成");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 dispatch_async(dispatch_get_main_queue(), ^{
                     MPMoviePlayerViewController * vc = [[MPMoviePlayerViewController alloc]initWithContentURL:[NSURL fileURLWithPath:filePath]];
                     [self.navigationController presentMoviePlayerViewControllerAnimated:vc];
@@ -46,6 +48,7 @@
                     NSLog(@"分段完成");
                 }];
             }];
+          
         }
     };
     [self.navigationController pushViewController:vc animated:YES];
@@ -63,4 +66,7 @@
     };
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+#pragma clang diagnostic pop
+
 @end
