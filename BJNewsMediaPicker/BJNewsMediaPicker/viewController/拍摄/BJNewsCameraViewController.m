@@ -187,7 +187,7 @@
         self.photoSettings.flashMode = AVCaptureFlashModeAuto;
     }
     if ([self.iDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
-        [self.iDevice setFocusMode:AVCaptureFocusModeAutoFocus];
+        [self.iDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
     }
     if ([self.iDevice isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeAutoWhiteBalance]) {
         [self.iDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeAutoWhiteBalance];
@@ -404,6 +404,12 @@
         }
         
         [self.iSession commitConfiguration];
+        
+        [self.iDevice lockForConfiguration:nil];
+        if ([self.iDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
+            [self.iDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+        }
+        [self.iDevice unlockForConfiguration];
     }
     
 }
@@ -434,6 +440,11 @@
 //        }];
   
 //        [self.iOutput setPhotoSettingsForSceneMonitoring:];
+        NSDictionary * setDict = @{AVVideoCodecKey:AVVideoCodecJPEG};
+        self.photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:setDict];
+        if([self.iOutput.supportedFlashModes containsObject:@(AVCaptureFlashModeAuto)]){
+            self.photoSettings.flashMode = AVCaptureFlashModeAuto;
+        }
         [self.iOutput capturePhotoWithSettings:self.photoSettings delegate:self];
         
     }

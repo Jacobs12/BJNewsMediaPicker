@@ -42,10 +42,10 @@ static BJNewsMediaManager * bjnews_media_manager = nil;
  */
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset resultHandler:(void (^) (UIImage * _Nullable result,NSDictionary * _Nullable info))handler{
     PHImageRequestOptions * assetOptions = [[PHImageRequestOptions alloc]init];
-    assetOptions.synchronous = NO;
+    assetOptions.synchronous = YES;
     assetOptions.resizeMode = PHImageRequestOptionsResizeModeExact;
     assetOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    PHImageRequestID requestID = [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(500, 500) contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    PHImageRequestID requestID = [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(500, 500) contentMode:PHImageContentModeAspectFit options:assetOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if(handler){
             handler(result,info);
         }

@@ -38,6 +38,7 @@
                 
             } completionHandler:^(NSString *filePath, UIImage *previewImage, NSInteger fileSize) {
                 NSLog(@"导出完成");
+                NSLog(@"=================");
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 dispatch_async(dispatch_get_main_queue(), ^{
