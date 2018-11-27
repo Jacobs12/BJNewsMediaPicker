@@ -107,9 +107,23 @@
     cell.imageView1.contentMode = UIViewContentModeScaleAspectFill;
     BJNewsMediaItem * model = self.dataArray[indexPath.row];
     [cell selectedItem:model.isSelected];
-    [model requestImageResultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-        cell.imageView1.image = result;
-    }];
+    cell.localID = model.phAsset.localIdentifier;
+    if(self.mediaType == BJNewsAssetMediaTypeVideo){
+        cell.timeLabel.hidden = NO;
+        NSInteger t = (NSInteger)model.phAsset.duration;
+        NSInteger min = t / 60;
+        NSInteger sec = t % 60;
+        cell.timeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld",min,sec];
+    }else{
+        cell.timeLabel.hidden = YES;
+    }
+//    [model requestImageResultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+////        cell.imageView1.image = result;
+//        NSLog(@"%f",result.size.width);
+//    }];
+ 
+    
+
     return cell;
 }
 
@@ -133,11 +147,42 @@
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
     [self.cellArray addObject:cell];
     [self checkCollectionViewAlpha];
+    
+    __weak BJNewsAssetCollectionViewCell * weak_cell = (BJNewsAssetCollectionViewCell *)cell;
+    BJNewsMediaItem * model = self.dataArray[indexPath.row];
+//    PHImageRequestOptions * assetOptions = [[PHImageRequestOptions alloc]init];
+//    assetOptions.synchronous = NO;
+//    assetOptions.resizeMode = PHImageRequestOptionsResizeModeExact;
+//    assetOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+//    PHImageRequestID requestID = [[PHImageManager defaultManager] requestImageForAsset:model.phAsset targetSize:CGSizeMake(500, 500) contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+//        NSLog(@"%ld",(long)indexPath.row);
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if([weak_cell.localID isEqualToString:model.phAsset.localIdentifier]){
+//                                    weak_cell.imageView1.image = result;
+//            }
+//        });
+//    }];
+    PHImageRequestID requestID = [[BJNewsMediaManager defaultManager] requestImageForAsset:model.phAsset resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if([weak_cell.localID isEqualToString:model.phAsset.localIdentifier]){
+                weak_cell.imageView1.image = result;
+            }
+        });
+    }];
+    model.requestID = requestID;
+    
+    
+    
+    NSLog(@"%f",model.phAsset.duration);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
     [self.cellArray removeObject:cell];
     [self checkCollectionViewAlpha];
+    
+    BJNewsMediaItem * model = self.dataArray[indexPath.row];
+//    [[PHImageManager defaultManager] cancelImageRequest:model.requestID];
+    [[BJNewsMediaManager defaultManager] cancelImageRequestWithID:model.requestID];
 }
 
 - (void)checkCollectionViewAlpha{
@@ -185,7 +230,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         //    获取所有智能相册
         PHFetchResult * smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
-        NSLog(@"系统相册的数目:%ld",smartAlbums.count);
+        NSLog(@"系统相册的数目:%lu",(unsigned long)smartAlbums.count);
         if(smartAlbums.count != 0){
             //            for (PHAssetCollection * collection in smartAlbums) {
             ////
@@ -207,7 +252,7 @@
                 type = PHAssetMediaTypeVideo;
             }
             PHFetchResult * results = [PHAsset fetchAssetsWithMediaType:type options:options];
-            NSLog(@"%ld\n%@",results.count,results);
+            NSLog(@"%lu\n%@",(unsigned long)results.count,results);
             
             for (PHAsset * asset in results) {
                 //                PHImageRequestOptions * assetOptions = [[PHImageRequestOptions alloc]init];

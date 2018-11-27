@@ -12,7 +12,9 @@
 
 @property (nonatomic,strong) IBOutlet UIImageView * imageView1;
 @property (nonatomic,strong) IBOutlet UIImageView * selectedImageView;
+@property (nonatomic,strong) IBOutlet UILabel * timeLabel;
 @property (nonatomic,assign) BOOL isSelected;
+@property (nonatomic,strong) NSString * localID;
 
 + (CGSize)itemSize;
 

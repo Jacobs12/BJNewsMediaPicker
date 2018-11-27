@@ -22,7 +22,14 @@
  @param asset 图片资源asset
  @param handler 完成回调
  */
-- (void)requestImageForAsset:(PHAsset *)asset resultHandler:(void (^) (UIImage * _Nullable result,NSDictionary * _Nullable info))handler;
+- (PHImageRequestID)requestImageForAsset:(PHAsset *)asset resultHandler:(void (^) (UIImage * _Nullable result,NSDictionary * _Nullable info))handler;
+
+/**
+ 取消读取图片
+
+ @param requestID requestID description
+ */
+- (void)cancelImageRequestWithID:(PHImageRequestID)requestID;
 
 #pragma makr - 视频转码
 

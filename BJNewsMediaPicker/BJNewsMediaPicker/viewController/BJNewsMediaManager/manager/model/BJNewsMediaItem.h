@@ -21,6 +21,8 @@ typedef NS_ENUM(NSInteger,BJNewsAssetMediaType){
 
 @property (nonatomic,strong) UIImage * image;
 
+@property (nonatomic,strong) NSDictionary * info;
+
 @end
 
 /**
@@ -37,6 +39,8 @@ typedef NS_ENUM(NSInteger,BJNewsAssetMediaType){
 @end
 
 @interface BJNewsMediaItem : NSObject
+
+@property (nonatomic,assign) PHImageRequestID requestID;
 
 /**
  图片

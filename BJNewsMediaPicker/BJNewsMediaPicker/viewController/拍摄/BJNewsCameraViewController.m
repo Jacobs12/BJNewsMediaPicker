@@ -9,6 +9,7 @@
 #import "BJNewsCameraViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "BJNewsAssetViewController.h"
 
 @interface BJNewsCameraViewController ()<AVCaptureFileOutputRecordingDelegate,AVCapturePhotoCaptureDelegate>{
     BJNewsAssetMediaType _mediaType;
@@ -61,6 +62,11 @@
 
 @property (nonatomic,strong) UIButton * flashButton;
 
+/**
+ 本地视频按钮
+ */
+@property (nonatomic,strong) UIButton * assetButton;
+
 @end
 
 @implementation BJNewsCameraViewController
@@ -97,12 +103,13 @@
     [self.view addSubview:self.videoButton];
     [self.view addSubview:self.cameraButton];
     [self.view addSubview:self.flashButton];
+    [self.view addSubview:self.assetButton];
 }
 
 - (UIButton *)photoButton{
     if(_photoButton == nil){
         _photoButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _photoButton.frame = CGRectMake(100, 100, 100, 60);
+        _photoButton.frame = CGRectMake(100, 200, 100, 60);
         [_photoButton setTitle:@"拍照" forState:UIControlStateNormal];
         [_photoButton addTarget:self action:@selector(takePhoto:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -112,7 +119,11 @@
 - (UIButton *)videoButton{
     if(_videoButton == nil){
         _videoButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _videoButton.frame = CGRectMake(100, 200, 100, 60);
+        _videoButton.frame = CGRectMake(100, 200, 60, 60);
+        _videoButton.center = CGPointMake([UIScreen mainScreen].bounds.size.width / 2.0, [UIScreen mainScreen].bounds.size.height - _videoButton.bounds.size.width / 2.0 - 80);
+        _videoButton.layer.cornerRadius = _videoButton.bounds.size.height / 2.0;
+        _videoButton.layer.masksToBounds = YES;
+        _videoButton.backgroundColor = [UIColor whiteColor];
         [_videoButton setTitle:@"开始" forState:UIControlStateNormal];
         [_videoButton addTarget:self action:@selector(takeVideo:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -138,6 +149,17 @@
     }
     return _flashButton;
 }
+
+- (UIButton *)assetButton{
+    if(_assetButton == nil){
+        _assetButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        _assetButton.frame = CGRectMake(20, [UIScreen mainScreen].bounds.size.height - 100, 100, 60);
+        [_assetButton setTitle:@"本地视频" forState:UIControlStateNormal];
+        [_assetButton addTarget:self action:@selector(assetButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _assetButton;
+}
+
 
 - (AVCaptureSession *)iSession{
     if(_iSession == nil){
@@ -384,6 +406,13 @@
         [self.iSession commitConfiguration];
     }
     
+}
+
+- (void)assetButtonClick:(UIButton *)button{
+    BJNewsAssetViewController * vc = [[BJNewsAssetViewController alloc]init];
+    vc.maxCount = 1;
+    vc.mediaType = BJNewsAssetMediaTypeVideo;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)takePhotoAction:(id)sender {

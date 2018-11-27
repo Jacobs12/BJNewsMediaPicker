@@ -30,20 +30,33 @@
                             <constraint firstAttribute="height" constant="25" id="rdS-1x-tnh"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXP-QL-3dU">
+                        <rect key="frame" x="53" y="81" width="42" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="42" id="XoJ-zE-vCY"/>
+                            <constraint firstAttribute="height" constant="17" id="xaE-7H-TEh"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstItem="ZNq-ri-uVf" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="1ib-ZU-8oK"/>
+                <constraint firstAttribute="bottom" secondItem="AXP-QL-3dU" secondAttribute="bottom" constant="2" id="R1e-Jn-XxT"/>
                 <constraint firstAttribute="trailing" secondItem="NT2-LO-cts" secondAttribute="trailing" constant="6" id="UEe-N0-OqS"/>
                 <constraint firstAttribute="trailing" secondItem="ZNq-ri-uVf" secondAttribute="trailing" id="VBm-2f-QY1"/>
                 <constraint firstItem="NT2-LO-cts" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="6" id="X1E-nm-YG3"/>
                 <constraint firstAttribute="bottom" secondItem="ZNq-ri-uVf" secondAttribute="bottom" id="aFM-bb-afS"/>
+                <constraint firstAttribute="trailing" secondItem="AXP-QL-3dU" secondAttribute="trailing" constant="5" id="fJ1-pe-8cP"/>
                 <constraint firstItem="ZNq-ri-uVf" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="lOB-mi-FA1"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <connections>
                 <outlet property="imageView1" destination="ZNq-ri-uVf" id="0n9-o0-F7D"/>
                 <outlet property="selectedImageView" destination="NT2-LO-cts" id="gSL-af-shd"/>
+                <outlet property="timeLabel" destination="AXP-QL-3dU" id="bJs-0Y-tWy"/>
             </connections>
         </collectionViewCell>
     </objects>

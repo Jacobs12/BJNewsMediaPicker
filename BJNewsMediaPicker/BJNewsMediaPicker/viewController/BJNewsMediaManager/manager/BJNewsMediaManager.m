@@ -40,16 +40,26 @@ static BJNewsMediaManager * bjnews_media_manager = nil;
  @param asset 图片资源asset
  @param handler 完成回调
  */
-- (void)requestImageForAsset:(PHAsset *)asset resultHandler:(void (^) (UIImage * _Nullable result,NSDictionary * _Nullable info))handler{
+- (PHImageRequestID)requestImageForAsset:(PHAsset *)asset resultHandler:(void (^) (UIImage * _Nullable result,NSDictionary * _Nullable info))handler{
     PHImageRequestOptions * assetOptions = [[PHImageRequestOptions alloc]init];
     assetOptions.synchronous = NO;
     assetOptions.resizeMode = PHImageRequestOptionsResizeModeExact;
     assetOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(500, 500) contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    PHImageRequestID requestID = [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(500, 500) contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if(handler){
             handler(result,info);
         }
     }];
+    return requestID;
+}
+
+/**
+ 取消读取图片
+ 
+ @param requestID requestID description
+ */
+- (void)cancelImageRequestWithID:(PHImageRequestID)requestID{
+    [[PHImageManager defaultManager] cancelImageRequest:requestID];
 }
 
 #pragma mark - 视频转码
@@ -191,12 +201,12 @@ static BJNewsMediaManager * bjnews_media_manager = nil;
             if(loc + length >= data.length){
                 tempData = [data subdataWithRange:NSMakeRange(loc, data.length - loc)];
                 loc += length;
-                [tempData writeToFile:[NSString stringWithFormat:@"%@/%ld",tempPath,count] atomically:NO];
+                [tempData writeToFile:[NSString stringWithFormat:@"%@/%ld",tempPath,(long)count] atomically:NO];
                 break;
             }
             tempData = [data subdataWithRange:NSMakeRange(loc, length)];
             loc += length;
-            [tempData writeToFile:[NSString stringWithFormat:@"%@/%ld",tempPath,count] atomically:NO];
+            [tempData writeToFile:[NSString stringWithFormat:@"%@/%ld",tempPath,(long)count] atomically:NO];
         }
         BJNewsMediaLogItem * logItem = [BJNewsMediaCache itemWithVideoID:videoID];
         [logItem updateSize:data.length exportPath:path subsectionPath:tempPath subsectionCount:count progress:0];

@@ -46,10 +46,19 @@
  @param handler 完成回调
  */
 - (void)requestImageResultHandler:(void (^) (UIImage * _Nullable result,NSDictionary * _Nullable info))handler{
+//    if(self.imageItem.image){
+//        if(handler){
+//            handler(self.imageItem.image,self.imageItem.info);
+//        }
+//        return;
+//    }
+//
+    __weak typeof(self) weak_self = self;
     [[BJNewsMediaManager defaultManager] requestImageForAsset:self.phAsset resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if(handler){
-            self.imageItem.image = result;
-            self.videoItem.image = result;
+            weak_self.imageItem.image = result;
+            weak_self.videoItem.image = result;
+            weak_self.imageItem.info = info;
             handler(result,info);
         }
     }];
