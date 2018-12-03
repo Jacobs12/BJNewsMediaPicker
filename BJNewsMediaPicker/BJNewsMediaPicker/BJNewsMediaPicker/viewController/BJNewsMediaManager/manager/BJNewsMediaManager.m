@@ -10,9 +10,13 @@
 
 static BJNewsMediaManager * bjnews_media_manager = nil;
 
-@interface BJNewsMediaManager ()
+@interface BJNewsMediaManager (){
+    BOOL _timerEnable;
+}
 
 @property (nonatomic,strong) BJNewsMediaCache * cacheManager;
+@property (nonatomic,strong) NSTimer * timer;
+@property (nonatomic,strong) NSMutableArray <BJNewsExportSession *> * exportArray;
 
 @end
 
@@ -30,6 +34,55 @@ static BJNewsMediaManager * bjnews_media_manager = nil;
         _cacheManager = [BJNewsMediaCache defaultManager];
     }
     return _cacheManager;
+}
+
+#pragma mark - 计时器
+- (NSMutableArray <BJNewsExportSession *> *)exportArray{
+    if(_exportArray == nil){
+        _exportArray = [[NSMutableArray alloc]init];
+    }
+    return _exportArray;
+}
+
+- (void)addExportSession:(BJNewsExportSession *)export{
+    NSLog(@"加入");
+    [self.exportArray addObject:export];
+    _timerEnable = YES;
+    [self startTimer];
+}
+
+- (void)startTimer{
+    if(_timerEnable == NO){
+        return;
+    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self startTimer];
+        [self refresh:nil];
+    });
+}
+
+- (void)endTimer{
+    _timerEnable = NO;
+}
+
+- (void)refresh:(id)sender{
+    NSMutableArray * deleteArray = [[NSMutableArray alloc]init];
+    for (BJNewsExportSession * model in self.exportArray) {
+        if(model.exportProgress){
+            float progress = model.exportSession.progress;
+            model.exportProgress(progress);
+        }
+        if(model.exportSession.progress >= 1.0){
+            [deleteArray addObject:model];
+        }
+    }
+    for (BJNewsExportSession * session in deleteArray) {
+        session.exportProgress = nil;
+        [self.exportArray removeObject:session];
+    }
+    if(self.exportArray.count == 0){
+        [self endTimer];
+    }
 }
 
 #pragma mark - 获取图片
@@ -106,7 +159,6 @@ static BJNewsMediaManager * bjnews_media_manager = nil;
         exportSession.outputURL = [NSURL fileURLWithPath:filePath];
         exportSession.outputFileType = AVFileTypeMPEG4;
         [exportSession exportAsynchronouslyWithCompletionHandler:^{
-            NSLog(@"视频导出完成");
             NSInteger fileSize = 0;
             NSDictionary * itemAtt = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
             if(itemAtt && itemAtt[@"NSFileSize"]){
@@ -117,6 +169,11 @@ static BJNewsMediaManager * bjnews_media_manager = nil;
                 handler(YES,filePath,fileSize);
             }
         }];
+//        监听转码进度
+        BJNewsExportSession * modelSession = [[BJNewsExportSession alloc]init];
+        modelSession.exportSession = exportSession;
+        modelSession.exportProgress = aProgress;
+        [self addExportSession:modelSession];
     }];
 }
 
@@ -170,6 +227,11 @@ static BJNewsMediaManager * bjnews_media_manager = nil;
             handler(YES,filePath,fileSize);
         }
     }];
+    //        监听转码进度
+    BJNewsExportSession * modelSession = [[BJNewsExportSession alloc]init];
+    modelSession.exportSession = exportSession;
+    modelSession.exportProgress = aProgress;
+    [self addExportSession:modelSession];
 }
 
 #pragma mark - 视频分段

@@ -76,9 +76,7 @@
  @param handler 完成回调
  */
 - (void)exportVideoProgress:(void (^) (float progress))progress completionHandler:(void (^) (NSString * filePath,UIImage * previewImage,NSInteger fileSize))handler{
-    [[BJNewsMediaManager defaultManager] exportVideoWithAsset:self.phAsset progress:^(float progress) {
-        
-    } completionHandler:^(BOOL isSuc, NSString *filePath, NSInteger fileSize) {
+    [[BJNewsMediaManager defaultManager] exportVideoWithAsset:self.phAsset progress:progress completionHandler:^(BOOL isSuc, NSString *filePath, NSInteger fileSize) {
         @try {
             if(handler == nil){
                 return ;

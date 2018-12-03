@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BJNewsMediaCache.h"
-#import <Photos/Photos.h>
+#import "BJNewsExportSession.h"
 
 @interface BJNewsMediaManager : NSObject
 

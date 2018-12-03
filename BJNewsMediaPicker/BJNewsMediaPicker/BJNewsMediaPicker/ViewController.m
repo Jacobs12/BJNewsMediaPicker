@@ -35,7 +35,7 @@
     vc.callBack = ^(NSArray<BJNewsMediaItem *> *results) {
         for (BJNewsMediaItem * item in results) {
             [item exportVideoProgress:^(float progress) {
-                
+                NSLog(@"界面显示进度%@:%f",item.phAsset.localIdentifier,progress);
             } completionHandler:^(NSString *filePath, UIImage *previewImage, NSInteger fileSize) {
                 NSLog(@"导出完成");
                 NSLog(@"=================");

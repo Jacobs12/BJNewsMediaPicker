@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A31641B321AFF9B600658F34 /* BJNewsExportSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A31641B221AFF9B600658F34 /* BJNewsExportSession.m */; };
 		A32D88A421A6A21800996A68 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88A321A6A21800996A68 /* AppDelegate.m */; };
 		A32D88A721A6A21800996A68 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A32D88A621A6A21800996A68 /* ViewController.m */; };
 		A32D88AA21A6A21900996A68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32D88A821A6A21900996A68 /* Main.storyboard */; };
@@ -44,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A31641B121AFF9B600658F34 /* BJNewsExportSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJNewsExportSession.h; sourceTree = "<group>"; };
+		A31641B221AFF9B600658F34 /* BJNewsExportSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJNewsExportSession.m; sourceTree = "<group>"; };
 		A32D889F21A6A21800996A68 /* BJNewsMediaPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BJNewsMediaPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32D88A221A6A21800996A68 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A32D88A321A6A21800996A68 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -222,6 +225,8 @@
 			children = (
 				A32D88E221A6A2CB00996A68 /* BJNewsMediaItem.h */,
 				A32D88E321A6A2CB00996A68 /* BJNewsMediaItem.m */,
+				A31641B121AFF9B600658F34 /* BJNewsExportSession.h */,
+				A31641B221AFF9B600658F34 /* BJNewsExportSession.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -399,6 +404,7 @@
 				A32D890221A6A96B00996A68 /* NSString+BJNewsMediaMD5.m in Sources */,
 				A32D88A721A6A21800996A68 /* ViewController.m in Sources */,
 				A32D88F621A6A38500996A68 /* BJNewsAssetCollectionViewCell.m in Sources */,
+				A31641B321AFF9B600658F34 /* BJNewsExportSession.m in Sources */,
 				A32D88E421A6A2CB00996A68 /* BJNewsMediaItem.m in Sources */,
 				A32D88E121A6A2C100996A68 /* BJNewsMediaCache.m in Sources */,
 				A32D88B221A6A22200996A68 /* main.m in Sources */,

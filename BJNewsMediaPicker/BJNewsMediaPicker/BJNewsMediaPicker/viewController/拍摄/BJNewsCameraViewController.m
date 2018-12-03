@@ -98,6 +98,153 @@
     }
 }
 
+#pragma mark - 配置硬件设备信息
+
+/**
+ 创建设备会话
+
+ @return return value description
+ */
+- (AVCaptureSession *)iSession{
+    if(_iSession == nil){
+        _iSession = [[AVCaptureSession alloc]init];
+    }
+    return _iSession;
+}
+
+/**
+ 配置输入以及输出
+ */
+- (void)initCamera{
+//    设置高清晰度
+    self.iSession.sessionPreset = AVCaptureSessionPresetHigh;
+//    获取后置摄像头
+    self.iDevice = [self cameraWithPostion:AVCaptureDevicePositionBack];
+    //添加摄像头设备
+    //对设备进行设置时需上锁，设置完再打开锁
+    NSDictionary * setDict = @{AVVideoCodecKey:AVVideoCodecJPEG};
+    self.photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:setDict];
+    self.iOutput = [[AVCapturePhotoOutput alloc]init];
+    
+    [self.iDevice lockForConfiguration:nil];
+    //    if ([self.iDevice isFlashModeSupported:AVCaptureFlashModeAuto]) {
+    //        [self.iDevice setFlashMode:AVCaptureFlashModeAuto];
+    //    }
+    if([self.iOutput.supportedFlashModes containsObject:@(AVCaptureFlashModeAuto)]){
+        self.photoSettings.flashMode = AVCaptureFlashModeAuto;
+    }
+//    设置设备持续自动对焦
+    if ([self.iDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
+        [self.iDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+    }
+    if ([self.iDevice isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeAutoWhiteBalance]) {
+        [self.iDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeAutoWhiteBalance];
+    }
+    [self.iDevice unlockForConfiguration];
+    //添加音频设备
+    //    AVCaptureDevice *audioDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
+    AVCaptureDevice * audioDevice = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInMicrophone] mediaType:AVMediaTypeAudio position:AVCaptureDevicePositionUnspecified].devices.firstObject;
+    
+    AVCaptureDeviceInput *audioInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:nil];
+    
+    self.iInput = [[AVCaptureDeviceInput alloc]initWithDevice:self.iDevice error:nil];
+    //    < iOS10
+    //    self.iOutput = [[AVCaptureStillImageOutput alloc]init];
+    //    NSDictionary *setDic = [NSDictionary dictionaryWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey, nil];
+    //    self.iOutput.outputSettings = setDic;
+    //    NSDictionary * setDict = @{AVVideoCodecKey:AVVideoCodecJPEG};
+    //    [self.iOutput setPhotoSettingsForSceneMonitoring:[AVCapturePhotoSettings photoSettingsWithFormat:setDict]];
+    
+    self.iMovieOutput = [[AVCaptureMovieFileOutput alloc]init];
+    
+    if ([self.iSession canAddInput:self.iInput]) {
+        [self.iSession addInput:self.iInput];
+    }
+    if ([self.iSession canAddOutput:self.iOutput]) {
+        [self.iSession addOutput:self.iOutput];
+    }
+    if ([self.iSession canAddInput:audioInput]) {
+        [self.iSession addInput:audioInput];
+    }
+//    预览层
+    self.iPreviewLayer = [[AVCaptureVideoPreviewLayer alloc]initWithSession:self.iSession];
+    [self.iPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    self.iPreviewLayer.frame = [UIScreen mainScreen].bounds;
+    [self.view.layer insertSublayer:self.iPreviewLayer atIndex:0];
+    
+    [self.iSession startRunning];
+}
+
+/**
+ 获取前后摄像头
+ 
+ @param position position description
+ @return return value description
+ */
+- (AVCaptureDevice *)cameraWithPostion:(AVCaptureDevicePosition)position{
+    if (@available(iOS 10.0, *)) {
+        AVCaptureDeviceDiscoverySession *devicesIOS10 = [AVCaptureDeviceDiscoverySession  discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:position];
+        NSArray *devicesIOS  = devicesIOS10.devices;
+        for (AVCaptureDevice *device in devicesIOS) {
+            if ([device position] == position) {
+                return device;
+            }
+        }
+        return nil;
+    } else {
+        // Fallback on earlier versions
+        //    前后摄像头
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        NSArray * deviceArray = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+        for (AVCaptureDevice * device in deviceArray) {
+            if(device.position == AVCaptureDevicePositionBack){
+                return device;
+            }
+        }
+#pragma clang diagnostic pop
+        
+        return nil;
+    }
+}
+
+/**
+ 设置拍摄模式：照片、视频
+ 
+ @param mediaType 拍摄模式
+ */
+- (IBAction)setMediaType:(BJNewsAssetMediaType)mediaType {
+    _mediaType = mediaType;
+    if (mediaType == BJNewsAssetMediaTypeVideo) {
+        [self.iSession beginConfiguration];
+        [self.iSession removeOutput:self.iOutput];
+        if ([self.iSession canAddOutput:self.iMovieOutput]) {
+            [self.iSession addOutput:self.iMovieOutput];
+            //设置视频防抖
+            AVCaptureConnection *connection = [self.iMovieOutput connectionWithMediaType:AVMediaTypeVideo];
+            if ([connection isVideoStabilizationSupported]) {
+                connection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeCinematic;
+            }
+        } else{
+            [self.iSession addOutput:self.iOutput];
+        }
+        
+        [self.iSession commitConfiguration];
+        
+    } else{
+        [self.iSession beginConfiguration];
+        [self.iSession removeOutput:self.iMovieOutput];
+        if ([self.iSession canAddOutput:self.iOutput]) {
+            [self.iSession addOutput:self.iOutput];
+        } else{
+            [self.iSession addOutput:self.iMovieOutput];
+        }
+        [self.iSession commitConfiguration];
+    }
+}
+
+#pragma mark - create view
+
 - (void)createView{
     [self.view addSubview:self.photoButton];
     [self.view addSubview:self.videoButton];
@@ -161,146 +308,6 @@
 }
 
 
-- (AVCaptureSession *)iSession{
-    if(_iSession == nil){
-        _iSession = [[AVCaptureSession alloc]init];
-    }
-    return _iSession;
-}
-
-- (void)initCamera{
-    self.iSession.sessionPreset = AVCaptureSessionPresetHigh;
-    
-    self.iDevice = [self cameraWithPostion:AVCaptureDevicePositionBack];
-
-    //添加摄像头设备
-    //对设备进行设置时需上锁，设置完再打开锁
-    NSDictionary * setDict = @{AVVideoCodecKey:AVVideoCodecJPEG};
-    self.photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:setDict];
-    self.iOutput = [[AVCapturePhotoOutput alloc]init];
-
-    [self.iDevice lockForConfiguration:nil];
-//    if ([self.iDevice isFlashModeSupported:AVCaptureFlashModeAuto]) {
-//        [self.iDevice setFlashMode:AVCaptureFlashModeAuto];
-//    }
-    if([self.iOutput.supportedFlashModes containsObject:@(AVCaptureFlashModeAuto)]){
-        self.photoSettings.flashMode = AVCaptureFlashModeAuto;
-    }
-    if ([self.iDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
-        [self.iDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
-    }
-    if ([self.iDevice isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeAutoWhiteBalance]) {
-        [self.iDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeAutoWhiteBalance];
-    }
-    [self.iDevice unlockForConfiguration];
-    //添加音频设备
-//    AVCaptureDevice *audioDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
-    AVCaptureDevice * audioDevice = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInMicrophone] mediaType:AVMediaTypeAudio position:AVCaptureDevicePositionUnspecified].devices.firstObject;
-    
-    AVCaptureDeviceInput *audioInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:nil];
-    
-    self.iInput = [[AVCaptureDeviceInput alloc]initWithDevice:self.iDevice error:nil];
-//    < iOS10
-//    self.iOutput = [[AVCaptureStillImageOutput alloc]init];
-    //    NSDictionary *setDic = [NSDictionary dictionaryWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey, nil];
-    //    self.iOutput.outputSettings = setDic;
-//    NSDictionary * setDict = @{AVVideoCodecKey:AVVideoCodecJPEG};
-//    [self.iOutput setPhotoSettingsForSceneMonitoring:[AVCapturePhotoSettings photoSettingsWithFormat:setDict]];
-
-    self.iMovieOutput = [[AVCaptureMovieFileOutput alloc]init];
-    
-    if ([self.iSession canAddInput:self.iInput]) {
-        [self.iSession addInput:self.iInput];
-    }
-    if ([self.iSession canAddOutput:self.iOutput]) {
-        [self.iSession addOutput:self.iOutput];
-    }
-    if ([self.iSession canAddInput:audioInput]) {
-        [self.iSession addInput:audioInput];
-    }
-    
-    self.iPreviewLayer = [[AVCaptureVideoPreviewLayer alloc]initWithSession:self.iSession];
-    [self.iPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-    self.iPreviewLayer.frame = [UIScreen mainScreen].bounds;
-    [self.view.layer insertSublayer:self.iPreviewLayer atIndex:0];
-    
-    [self.iSession startRunning];
-}
-
-/**
- 获取前后摄像头
-
- @param position position description
- @return return value description
- */
-- (AVCaptureDevice *)cameraWithPostion:(AVCaptureDevicePosition)position{
-    if (@available(iOS 10.0, *)) {
-        AVCaptureDeviceDiscoverySession *devicesIOS10 = [AVCaptureDeviceDiscoverySession  discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:position];
-        NSArray *devicesIOS  = devicesIOS10.devices;
-        for (AVCaptureDevice *device in devicesIOS) {
-            if ([device position] == position) {
-                return device;
-            }
-        }
-        return nil;
-    } else {
-        // Fallback on earlier versions
-        //    前后摄像头
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        NSArray * deviceArray = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-        for (AVCaptureDevice * device in deviceArray) {
-            if(device.position == AVCaptureDevicePositionBack){
-                return device;
-            }
-        }
-#pragma clang diagnostic pop
-  
-        return nil;
-    }
-}
-
-/**
- 设置拍摄模式：照片、视频
- 
- @param mediaType 拍摄模式
- */
-- (IBAction)setMediaType:(BJNewsAssetMediaType)mediaType {
-    _mediaType = mediaType;
-    
-    //    self.videoBtn.selected = !self.videoBtn.selected;
-    if (mediaType == BJNewsAssetMediaTypeVideo) {
-        
-        [self.iSession beginConfiguration];
-        [self.iSession removeOutput:self.iOutput];
-        if ([self.iSession canAddOutput:self.iMovieOutput]) {
-            [self.iSession addOutput:self.iMovieOutput];
-            
-            //            [self.takePhotoBtn setTitle:@"开始" forState:UIControlStateNormal];
-            
-            //设置视频防抖
-            AVCaptureConnection *connection = [self.iMovieOutput connectionWithMediaType:AVMediaTypeVideo];
-            if ([connection isVideoStabilizationSupported]) {
-                connection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeCinematic;
-            }
-            
-        } else{
-            [self.iSession addOutput:self.iOutput];
-        }
-        
-        [self.iSession commitConfiguration];
-        
-    } else{
-        [self.iSession beginConfiguration];
-        [self.iSession removeOutput:self.iMovieOutput];
-        if ([self.iSession canAddOutput:self.iOutput]) {
-            [self.iSession addOutput:self.iOutput];
-        } else{
-            [self.iSession addOutput:self.iMovieOutput];
-        }
-        [self.iSession commitConfiguration];
-    }
-}
 
 #pragma mark - 按钮点击事件
 
@@ -456,8 +463,6 @@
         if(!connect){
             NSLog(@"没有摄像头权限");
         }else{
-     
-            //            NSURL *url = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"cameraVideo.mov"]];
             NSURL * url = [NSURL fileURLWithPath:[[BJNewsMediaCache defaultManager] cameraPath]];
             NSLog(@"%@",url.path);
             if (![self.iMovieOutput isRecording]) {
@@ -479,7 +484,6 @@
     UIImage *image = [UIImage imageWithData:data];
 //    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
     UIImageWriteToSavedPhotosAlbum(image, self, nil, nil);
-
 }
 
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
@@ -498,24 +502,12 @@
             if(self.callBack){
                 self.callBack(model);
             }
-            
-//            "Use creationRequestForAssetFromVideoAtFilePath: on PHAssetChangeRequest from the Photos framework to create a new asset instead")
-//            PHPhotoLibrary * photoLibrary = [[PHPhotoLibrary alloc]init];
-//            [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:[NSURL fileURLWithPath:filePath]];
-//            [PHPhotoLibrary]
-            //保存视频到相册
-//            ALAssetsLibrary *assetsLibrary=[[ALAssetsLibrary alloc]init];
-//            [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:[NSURL fileURLWithPath:filePath] completionBlock:^(NSURL *assetURL, NSError *error) {
-//                NSLog(@"视频保存成功");
-//            }];
             [self writeVideoAtPath:filePath];
         }
     }];
-    //    //保存视频到相册
-    //    ALAssetsLibrary *assetsLibrary=[[ALAssetsLibrary alloc]init];
-    //    [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:nil];
-    //    NSLog(@"视频保存成功");
 }
+
+#pragma mark - 写入本地相册
 
 - (void)writeVideoAtPath:(NSString *)path{
     if([self isExistFolder:_folderName] == NO){
@@ -569,10 +561,8 @@
 
 - (void)saveImagePath:(NSString *)imagePath{
     NSURL *url = [NSURL fileURLWithPath:imagePath];
-    
     //标识保存到系统相册中的标识
     __block NSString *localIdentifier;
-    
     //首先获取相册的集合
     PHFetchResult *collectonResuts = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
     //对获取到集合进行遍历
